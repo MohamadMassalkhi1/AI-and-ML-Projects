@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stock Prediction Dashboard</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f4f7f6;
+            padding-top: 20px;
+        }
+        .card {
+            margin: 20px 0;
+        }
+        .chart-container {
+            margin-bottom: 20px;
+        }
+        .prediction-section {
+            margin-top: 30px;
+        }
+        footer {
+            background-color: #f1f1f1;
+            padding: 20px 0;
+            text-align: center;
+            margin-top: 40px;
+        }
+        .instructions {
+            margin-top: 20px;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="text-center">Stock Prediction Dashboard</h1>
+
+        <!-- Introduction and Instructions -->
+        <div class="instructions">
+            <h4>Welcome to the Stock Prediction App!</h4>
+            <p>This app predicts future stock prices using machine learning models. Enter a stock symbol or cryptocurrency (e.g., AAPL or BTC-USD) to get the following:</p>
+            <ul>
+                <li><strong>Price Prediction</strong> for the next 3 months</li>
+                <li><strong>Tomorrow's Predicted Price</strong> and an actionable recommendation</li>
+                <li><strong>Download the historical data</strong> used for predictions</li>
+            </ul>
+            <p><strong>How to Use:</strong> Simply type the stock symbol (e.g., AAPL) or cryptocurrency symbol (e.g., BTC-USD) and click "Get Prediction". The model will display the predicted price graph, tomorrow's predicted price, and provide a recommendation whether to buy, sell, or hold.</p>
+        </div>
+
+        <!-- Form for stock/crypto input -->
+        <form method="POST">
+            <div class="form-row">
+                <div class="col-md-4">
+                    <input type="text" class="form-control" placeholder="Stock (e.g., AAPL)" name="stock" value="{{ stock }}">
+                </div>
+                <div class="col-md-4">
+                    <input type="text" class="form-control" placeholder="Crypto (e.g., BTC-USD)" name="crypto" value="{{ crypto }}">
+                </div>
+                <div class="col-md-4">
+                    <button type="submit" class="btn btn-primary btn-block">Get Prediction</button>
+                </div>
+            </div>
+        </form>
+
+        <!-- Error Message -->
+        {% if error_message %}
+        <div class="alert alert-danger" role="alert">
+            {{ error_message }}
+        </div>
+        {% endif %}
+
+        <!-- Prediction Chart -->
+        {% if plot_path_prediction %}
+        <div class="chart-container">
+            <img src="{{ plot_path_prediction }}" class="img-fluid" alt="Prediction Chart">
+        </div>
+        {% endif %}
+
+        <!-- Tomorrow's Prediction and Recommendation -->
+        {% if tomorrow_price %}
+        <div class="prediction-section">
+            <h4>Tomorrow's Predicted Price: {{ tomorrow_price | round(2) }} USD</h4>
+            <p><strong>Recommendation: </strong>{{ decision }}</p>
+        </div>
+        {% endif %}
+
+        <!-- Data Summary -->
+        {% if data_desc %}
+        <div class="card">
+            <div class="card-header">
+                Data Summary
+            </div>
+            <div class="card-body">
+                {{ data_desc | safe }}
+            </div>
+        </div>
+        {% endif %}
+
+        <!-- Download Dataset -->
+        {% if dataset_link %}
+        <a href="{{ dataset_link }}" class="btn btn-success" download>Download Data as CSV</a>
+        {% endif %}
+
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2024 Mohamad Massalkhi. All Rights Reserved.</p>
+    </footer>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
